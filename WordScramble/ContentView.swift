@@ -57,6 +57,18 @@ struct ContentView: View {
 			return
 		}
 		
+		guard isSameOriginWord(word: answer) else {
+			wordError(title: "An original word",
+					  message: "Be more creative")
+			return
+		}
+		
+		guard isMoreThanThreeLetters(word: answer) else {
+			wordError(title: "Small word",
+					  message: "Word can't be shoter than 3 letters")
+			return
+		}
+		
 		guard isOriginal(word: answer) else {
 			wordError(title: "Word used already",
 					  message: "Be more original")
@@ -82,7 +94,7 @@ struct ContentView: View {
 	}
 	
 	private func startGame() {
-		if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "text") {
+		if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
 			if let startWordsString = try? String(contentsOf: startWordsURL) {
 				let words = startWordsString.components(separatedBy: "\n")
 				rootWord = words.randomElement() ?? "silkworm"
@@ -90,6 +102,18 @@ struct ContentView: View {
 			}
 		}
 		fatalError("Could not load start.txt from Bundle.")
+	}
+	
+	
+	
+	// Checks
+	
+	private func isSameOriginWord(word: String) -> Bool  {
+		rootWord != word
+	}
+	
+	private func isMoreThanThreeLetters(word: String) -> Bool {
+		word.count > 3
 	}
 	
 	private func isOriginal(word: String) -> Bool {
