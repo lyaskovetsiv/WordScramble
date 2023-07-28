@@ -8,6 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+	
+	// MARK: - States
+	
+	@State private var usedWords = [String]()
+	@State private var rootWord = ""
+	@State private var newWord = ""
+	
+	// MARK: - UI
+	
     var body: some View {
         VStack {
             Image(systemName: "globe")
