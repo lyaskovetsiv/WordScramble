@@ -22,27 +22,50 @@ struct ContentView: View {
 	
     var body: some View {
 		NavigationView {
-			List {
-				Section {
-					TextField("Enter your word", text: $newWord)
-						.autocapitalization(.none)
+			VStack {
+				Spacer()
+				Spacer()
+				HStack {
+					VStack {
+						Text("Player 1")
+							.font(.title)
+						Text("Score: ")
+					}
+					.padding()
+					.frame(width: 130, height: 120)
+					.border(.gray, width: 1)
+					VStack {
+						Text("Player 2")
+							.font(.title)
+						Text("Score: ")
+					}
+					.padding()
+					.frame(width: 130, height: 120)
+					.border(.gray, width: 1)
 				}
-				Section {
-					ForEach(usedWords, id: \.self) { word in
-						HStack {
-							Image(systemName: "\(word.count).circle")
-							Text(word)
+
+				List {
+					Section {
+						TextField("Enter your word", text: $newWord)
+							.autocapitalization(.none)
+					}
+					Section {
+						ForEach(usedWords, id: \.self) { word in
+							HStack {
+								Image(systemName: "\(word.count).circle")
+								Text(word)
+							}
+							
 						}
-						
 					}
 				}
+				.navigationTitle(rootWord.capitalized)
+				.toolbar(content: {
+					ToolbarItemGroup {
+						Button("Restart game", action: startGame)
+					}
+				})
 			}
-			.navigationTitle(rootWord)
-			.toolbar(content: {
-				ToolbarItemGroup {
-					Button("Restart game", action: startGame)
-				}
-			})
 			.onSubmit(addNewWord)
 			.onAppear(perform: startGame)
 			.alert(errorTitle, isPresented: $showingError) {
@@ -52,9 +75,11 @@ struct ContentView: View {
 			}
 		}
     }
-	
-	// MARK: - Private methods
-	
+}
+
+// MARK: - Private methods
+
+extension ContentView {
 	private func addNewWord() {
 		let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
 		guard answer.count > 0 else {
@@ -147,6 +172,8 @@ struct ContentView: View {
 		showingError = true
 	}
 }
+
+// MARK: - Preview
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
