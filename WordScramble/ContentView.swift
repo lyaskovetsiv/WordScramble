@@ -31,8 +31,18 @@ struct ContentView: View {
 				}
 			}
 			.navigationTitle(rootWord)
+			.onSubmit(addNewWord)
 		}
     }
+	
+	private func addNewWord() {
+		let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+		guard answer.count > 0 else {
+			return
+		}
+		usedWords.insert(answer, at: 0)
+		newWord = ""
+	}
 }
 
 struct ContentView_Previews: PreviewProvider {
