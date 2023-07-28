@@ -18,13 +18,20 @@ struct ContentView: View {
 	// MARK: - UI
 	
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+		NavigationView {
+			List {
+				Section {
+					TextField("Enter your word", text: $newWord)
+				}
+				
+				Section {
+					ForEach(usedWords, id: \.self) { word in
+						Text(word)
+					}
+				}
+			}
+			.navigationTitle(rootWord)
+		}
     }
 }
 
