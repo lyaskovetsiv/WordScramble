@@ -17,6 +17,9 @@ struct ContentView: View {
 	@State private var errorTitle = ""
 	@State private var errorMessage = ""
 	@State private var showingError = false
+	@State private var playerOneScore = 0
+	@State private var playerTwoScore = 0
+	@State private var isFirstPlayer: Bool = true
 	
 	// MARK: - UI
 	
@@ -29,7 +32,7 @@ struct ContentView: View {
 					VStack {
 						Text("Player 1")
 							.font(.title)
-						Text("Score: ")
+						Text("Score: \(playerOneScore)")
 					}
 					.padding()
 					.frame(width: 130, height: 120)
@@ -37,7 +40,7 @@ struct ContentView: View {
 					VStack {
 						Text("Player 2")
 							.font(.title)
-						Text("Score: ")
+						Text("Score: \(playerTwoScore)")
 					}
 					.padding()
 					.frame(width: 130, height: 120)
@@ -119,6 +122,15 @@ extension ContentView {
 		withAnimation {
 			usedWords.insert(answer, at: 0)
 		}
+		
+		if isFirstPlayer {
+			playerOneScore += answer.count
+		} else {
+			playerTwoScore += answer.count
+		}
+		
+		isFirstPlayer.toggle()
+		
 		newWord = ""
 	}
 	
@@ -127,6 +139,9 @@ extension ContentView {
 			if let startWordsString = try? String(contentsOf: startWordsURL) {
 				let words = startWordsString.components(separatedBy: "\n")
 				rootWord = words.randomElement() ?? "silkworm"
+				playerOneScore = 0
+				playerTwoScore = 0
+				usedWords.removeAll()
 				return
 			}
 		}
@@ -140,7 +155,7 @@ extension ContentView {
 	}
 	
 	private func isMoreThanThreeLetters(word: String) -> Bool {
-		word.count > 3
+		word.count > 2
 	}
 	
 	private func isOriginal(word: String) -> Bool {
