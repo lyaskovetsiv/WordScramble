@@ -29,24 +29,9 @@ struct ContentView: View {
 				Spacer()
 				Spacer()
 				HStack {
-					VStack {
-						Text("Player 1")
-							.font(.title)
-						Text("Score: \(playerOneScore)")
-					}
-					.padding()
-					.frame(width: 130, height: 120)
-					.border(.gray, width: 1)
-					VStack {
-						Text("Player 2")
-							.font(.title)
-						Text("Score: \(playerTwoScore)")
-					}
-					.padding()
-					.frame(width: 130, height: 120)
-					.border(.gray, width: 1)
+					UserScoreView(title: "Player 1", score: playerOneScore)
+					UserScoreView(title: "Player 2", score: playerTwoScore)
 				}
-
 				List {
 					Section {
 						TextField("Enter your word", text: $newWord)
