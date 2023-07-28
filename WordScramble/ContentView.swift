@@ -27,7 +27,6 @@ struct ContentView: View {
 					TextField("Enter your word", text: $newWord)
 						.autocapitalization(.none)
 				}
-				
 				Section {
 					ForEach(usedWords, id: \.self) { word in
 						HStack {
@@ -39,6 +38,11 @@ struct ContentView: View {
 				}
 			}
 			.navigationTitle(rootWord)
+			.toolbar(content: {
+				ToolbarItemGroup {
+					Button("Restart game", action: startGame)
+				}
+			})
 			.onSubmit(addNewWord)
 			.onAppear(perform: startGame)
 			.alert(errorTitle, isPresented: $showingError) {
@@ -103,8 +107,6 @@ struct ContentView: View {
 		}
 		fatalError("Could not load start.txt from Bundle.")
 	}
-	
-	
 	
 	// Checks
 	
