@@ -12,4 +12,6 @@ Several checks have been added to the logic of the game:
 - the word is written without mistakes
 
 Tech Stack: SwiftUI, MVC
+Studied: List, Bundle, UITextChecker, .onSubmit(), .onAppear() and so on.
+
 
