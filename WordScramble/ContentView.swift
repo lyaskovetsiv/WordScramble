@@ -68,6 +68,19 @@ struct ContentView: View {
 // MARK: - Private methods
 
 extension ContentView {
+	// Game
+	private func startGame() {
+		if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
+			if let startWordsString = try? String(contentsOf: startWordsURL) {
+				let words = startWordsString.components(separatedBy: "\n")
+				rootWord = words.randomElement() ?? "silkworm"
+				refreshData()
+				return
+			}
+		}
+		fatalError("Could not load start.txt from Bundle.")
+	}
+	
 	private func addNewWord() {
 		let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
 		guard answer.count > 0 else {
@@ -119,22 +132,20 @@ extension ContentView {
 		newWord = ""
 	}
 	
-	private func startGame() {
-		if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
-			if let startWordsString = try? String(contentsOf: startWordsURL) {
-				let words = startWordsString.components(separatedBy: "\n")
-				rootWord = words.randomElement() ?? "silkworm"
-				playerOneScore = 0
-				playerTwoScore = 0
-				usedWords.removeAll()
-				return
-			}
-		}
-		fatalError("Could not load start.txt from Bundle.")
+	private func refreshData() {
+		usedWords.removeAll()
+		isFirstPlayer = true
+		playerOneScore = 0
+		playerTwoScore = 0
+	}
+	
+	private func wordError(title: String, message: String) {
+		errorTitle = title
+		errorMessage = message
+		showingError = true
 	}
 	
 	// Checks
-	
 	private func isSameOriginWord(word: String) -> Bool  {
 		rootWord != word
 	}
@@ -164,12 +175,6 @@ extension ContentView {
 		let range = NSRange(location: 0, length: word.utf16.count)
 		let misspelledRange =  checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
 		return misspelledRange.location == NSNotFound
-	}
-	
-	private func wordError(title: String, message: String) {
-		errorTitle = title
-		errorMessage = message
-		showingError = true
 	}
 }
 
