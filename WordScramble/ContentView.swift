@@ -14,6 +14,9 @@ struct ContentView: View {
 	@State private var usedWords = [String]()
 	@State private var rootWord = ""
 	@State private var newWord = ""
+	@State private var errorTitle = ""
+	@State private var errorMessage = ""
+	@State private var showingError = false
 	
 	// MARK: - UI
 	
@@ -38,14 +41,40 @@ struct ContentView: View {
 			.navigationTitle(rootWord)
 			.onSubmit(addNewWord)
 			.onAppear(perform: startGame)
+			.alert(errorTitle, isPresented: $showingError) {
+				Button("OK", role: .cancel) { }
+			} message: {
+				Text(errorMessage)
+			}
 		}
     }
+	
+	// MARK: - Private methods
 	
 	private func addNewWord() {
 		let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
 		guard answer.count > 0 else {
 			return
 		}
+		
+		guard isOriginal(word: answer) else {
+			wordError(title: "Word used already",
+					  message: "Be more original")
+			return
+		}
+		
+		guard isPossibleWord(word: answer) else {
+			wordError(title: "Word not possible",
+					  message: "You can't spell this word from \(rootWord)")
+			return
+		}
+		
+		guard isCorrect(word: answer) else {
+			wordError(title: "Word not recognized",
+					  message: "You can't just make them up")
+			return
+		}
+		
 		withAnimation {
 			usedWords.insert(answer, at: 0)
 		}
@@ -84,6 +113,12 @@ struct ContentView: View {
 		let range = NSRange(location: 0, length: word.utf16.count)
 		let misspelledRange =  checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
 		return misspelledRange.location == NSNotFound
+	}
+	
+	private func wordError(title: String, message: String) {
+		errorTitle = title
+		errorMessage = message
+		showingError = true
 	}
 }
 
