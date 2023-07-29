@@ -14,5 +14,5 @@ Several checks have been added to the logic of the game:
 Tech Stack: SwiftUI, MVC
 Studied: List, Bundle, UITextChecker, .onSubmit(), .onAppear() and so on.
 
-https://github.com/lyaskovetsiv/WordScramble/assets/100786077/3b76ff26-118b-42ae-bb8e-e82eb5a3ce32
+https://github.com/lyaskovetsiv/WordScramble/assets/100786077/966d5977-b275-4639-abd3-1739dd2bc0cc
 
