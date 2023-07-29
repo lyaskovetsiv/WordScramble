@@ -29,13 +29,29 @@ struct ContentView: View {
 				Spacer()
 				Spacer()
 				HStack {
-					UserScoreView(title: "Player 1", score: playerOneScore)
-					UserScoreView(title: "Player 2", score: playerTwoScore)
+					VStack {
+						Text("Player 1")
+							.font(.title)
+						Text("Score: \(playerOneScore)")
+					}
+					.padding()
+					.frame(width: 130, height: 120)
+					.border(.gray, width: 1)
+					VStack {
+						Text("Player 2")
+							.font(.title)
+						Text("Score: \(playerTwoScore)")
+					}
+					.padding()
+					.frame(width: 130, height: 120)
+					.border(.gray, width: 1)
 				}
 				List {
 					Section {
-						TextField("Enter your word", text: $newWord)
+						TextField("", text: $newWord)
 							.autocapitalization(.none)
+					} header: {
+						Text("Enter your word")
 					}
 					Section {
 						ForEach(usedWords, id: \.self) { word in
@@ -43,8 +59,9 @@ struct ContentView: View {
 								Image(systemName: "\(word.count).circle")
 								Text(word)
 							}
-							
 						}
+					} header: {
+						Text("Game answers")
 					}
 				}
 				.navigationTitle(rootWord.capitalized)
@@ -125,6 +142,7 @@ extension ContentView {
 			playerOneScore += answer.count
 		} else {
 			playerTwoScore += answer.count
+			print(playerTwoScore)
 		}
 		
 		isFirstPlayer.toggle()
@@ -134,6 +152,7 @@ extension ContentView {
 	
 	private func refreshData() {
 		usedWords.removeAll()
+		newWord = ""
 		isFirstPlayer = true
 		playerOneScore = 0
 		playerTwoScore = 0
